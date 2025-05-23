@@ -1,5 +1,6 @@
-package model.grafo;
+package model.algoritmos;
 
+import model.grafo.*;
 import estructuras.ListaEnlazada;
 import estructuras.Nodo;
 import estructuras.Pila;

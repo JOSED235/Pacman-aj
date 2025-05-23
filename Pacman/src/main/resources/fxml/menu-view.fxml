@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ui.Menuview"
+      spacing="20" alignment="CENTER"
+      style="-fx-padding: 40;">
+
+    <Label text="PACMAN GRAFO" style="-fx-font-size: 32px;" />
+    <Button text="Iniciar Juego" onAction="#iniciarJuego"/>
+    <Button text="Instrucciones" onAction="#verManual"/>
+    <Button text="Salir" onAction="#salirApp"/>
+</VBox>

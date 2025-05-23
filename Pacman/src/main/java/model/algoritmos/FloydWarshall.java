@@ -1,12 +1,11 @@
-package model.grafo;
+package model.algoritmos;
 
+import model.grafo.*;
 import estructuras.ListaEnlazada;
 import estructuras.Nodo;
 
 public class FloydWarshall<T> {
-
     private IGrafo<T> grafo;
-
     public FloydWarshall(IGrafo<T> grafo) {
         this.grafo = grafo;
     }

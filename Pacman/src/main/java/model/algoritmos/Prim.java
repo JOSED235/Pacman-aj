@@ -1,4 +1,6 @@
-package model.grafo;
+package model.algoritmos;
+
+import model.grafo.*;
 
 import estructuras.ColaPrioridad;
 import estructuras.ListaEnlazada;

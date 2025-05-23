@@ -1,8 +1,10 @@
-package model.grafo;
+package model.algoritmos;
 
+import model.grafo.*;
 import estructuras.Cola;
 import estructuras.ListaEnlazada;
 import estructuras.Nodo;
+
 
 public class BFS<T> {
 
