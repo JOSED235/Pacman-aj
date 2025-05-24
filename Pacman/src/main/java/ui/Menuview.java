@@ -31,13 +31,19 @@ public class Menuview {
 
     @FXML
     public void verManual(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION,
-                "Instrucciones:\n\n- Usa las flechas para mover a Pacman.\n- Come los puntos y evita los fantasmas.\n- Usa las super-píldoras para cambiar el comportamiento.",
-                ButtonType.OK);
-        alert.setTitle("Manual del Jugador");
-        alert.setHeaderText("Cómo jugar");
-        alert.showAndWait();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/manual-view.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Manual del Jugador");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 
     @FXML
     public void salirApp(ActionEvent event) {

@@ -10,9 +10,18 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/menu-view.fxml"));
+        // Cargar FXML del menú principal
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu-view.fxml"));
+        Parent root = loader.load();
+
+        // Crear escena y aplicar estilo.css
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/estilo.css").toExternalForm());
+
+        // Configurar ventana
         primaryStage.setTitle("Pacman Grafo");
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(false); // Opcional: ventana fija
         primaryStage.show();
     }
 
