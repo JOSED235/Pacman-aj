@@ -1,0 +1,15 @@
+.boton {
+    -fx-background-color: #222;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-padding: 10 20;
+    -fx-background-radius: 8;
+    -fx-border-color: yellow;
+    -fx-border-width: 2;
+}
+
+.boton:hover {
+    -fx-background-color: #444;
+    -fx-text-fill: yellow;
+    -fx-cursor: hand;
+}

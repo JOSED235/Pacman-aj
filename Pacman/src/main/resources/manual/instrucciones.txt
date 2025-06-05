@@ -1,0 +1,44 @@
+
+## Objetivo del juego
+
+El objetivo principal de Pac-Man es **comer todos los "Pac-Dots" (puntos pequeños) que se encuentran dispersos por el laberinto** antes de que los cuatro fantasmas te atrapen. Al limpiar el laberinto de todos los puntos, pasas al siguiente nivel, donde el desafío aumenta.
+
+## Elementos del juego
+
+* **Pac-Man:** El personaje principal, una esfera amarilla que controlas.
+* **Pac-Dots:** Los puntos pequeños que debes comer para despejar el laberinto. Cada Pac-Dot vale 10 puntos.
+* **Power Pellets (Píldoras de poder):** Son puntos más grandes y brillantes ubicados generalmente en las cuatro esquinas del laberinto. Cuando Pac-Man come una de estas píldoras, los fantasmas se vuelven azules y vulnerables.
+* **Fantasmas:** Hay cuatro fantasmas, cada uno con una personalidad y patrón de movimiento distinto, aunque intentan atrapar a Pac-Man:
+    * **Blinky (Rojo):** Siempre persigue directamente a Pac-Man.
+    * **Pinky (Rosa):** Intenta anticipar los movimientos de Pac-Man y posicionarse para cortarle el paso.
+    * **Inky (Cian):** Su comportamiento es más complejo, ya que se basa en la posición de Pac-Man y Blinky para determinar su objetivo.
+    * **Clyde (Naranja):** Es el más impredecible; a veces persigue a Pac-Man, pero también puede huir a su esquina del laberinto si Pac-Man está demasiado cerca.
+* **Frutas/Bonus:** Aparecen periódicamente en el centro del laberinto después de comer una cierta cantidad de Pac-Dots. Comer estas frutas te da puntos extra y su valor aumenta con cada nivel.
+
+## Cómo se juega
+
+1.  **Control:** Mueve a Pac-Man a través del laberinto usando las flechas de dirección (arriba, abajo, izquierda, derecha) en tu teclado o el joystick en las máquinas arcade. Pac-Man se mueve en la dirección indicada hasta que encuentra un obstáculo o se le da una nueva dirección.
+2.  **Comer Pac-Dots:** Recorre el laberinto comiendo todos los Pac-Dots. Cada punto que comes suma a tu puntuación.
+3.  **Evitar a los fantasmas:** Los fantasmas son tu principal amenaza. Si un fantasma toca a Pac-Man cuando no está bajo el efecto de una Power Pellet, Pac-Man pierde una vida.
+4.  **Usar los Power Pellets:** Si comes una Power Pellet, los fantasmas se vuelven azules por un tiempo limitado y Pac-Man puede comérselos. Cuando Pac-Man come un fantasma azul, este regresa a su base en el centro del laberinto y se regenera para volver a la caza. El primer fantasma que comes vale 200 puntos, el segundo 400, el tercero 800 y el cuarto 1600. El valor de los fantasmas que se comen se duplica cada vez que se come una Power Pellet en el mismo nivel.
+5.  **Bonus y Vidas Extra:** De forma periódica (normalmente al alcanzar cierta puntuación), puedes obtener una vida extra.
+
+## Cómo se gana y se pierde
+
+* **Se gana:**
+    * **Completando un nivel:** Ganas un nivel cuando Pac-Man ha comido todos los Pac-Dots del laberinto. Esto te lleva al siguiente nivel, que suele ser más difícil (los fantasmas se mueven más rápido y el efecto de las Power Pellets dura menos).
+    * **Alcanzando la puntuación más alta:** El objetivo final es conseguir la mayor puntuación posible. Algunos jugadores buscan el "juego perfecto", que implica completar todos los niveles posibles y maximizar la puntuación.
+
+* **Se pierde:**
+    * **Perdiendo todas tus vidas:** Pac-Man comienza con un número limitado de vidas (normalmente 3). Cada vez que un fantasma te atrapa (y no estás bajo el efecto de una Power Pellet), pierdes una vida. Si pierdes todas tus vidas, el juego termina.
+
+## Poderes y sus efectos
+
+El principal "poder" en Pac-Man son las **Power Pellets**. Sus efectos son los siguientes:
+
+* **Vulnerabilidad de los fantasmas:** Al comer una Power Pellet, los fantasmas cambian de color a azul y se vuelven vulnerables. Durante este tiempo, los fantasmas intentarán huir de Pac-Man.
+* **Comer fantasmas:** Si Pac-Man toca a un fantasma azul, se lo "come" y el fantasma regresa a su base. Esto te otorga puntos extra.
+* **Regeneración de fantasmas:** Una vez que un fantasma ha sido comido, sus ojos regresan rápidamente a la base en el centro del laberinto y el fantasma se regenera para continuar persiguiendo a Pac-Man.
+* **Duración limitada:** El efecto de la Power Pellet es temporal. El tiempo que los fantasmas permanecen azules disminuye a medida que avanzas en los niveles, haciendo el juego más desafiante. Los fantasmas parpadean en blanco antes de volver a su color normal, indicando que el efecto de la Power Pellet está a punto de terminar.
+
+Además de las Power Pellets, las **frutas/bonus** te dan puntos extra y contribuyen a tu puntuación, pero no otorgan ningún poder especial a Pac-Man.

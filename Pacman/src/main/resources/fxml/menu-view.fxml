@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ui.Menuview"
+      alignment="CENTER"
+      spacing="20"
+      style="-fx-background-color: black; -fx-padding: 40;"
+      prefWidth="800" prefHeight="600">
+
+    <!-- Logo -->
+    <ImageView fitWidth="500" preserveRatio="true">
+        <image>
+            <Image url="@../sprites/logopac.png" />
+        </image>
+    </ImageView>
+
+    <!-- Botones -->
+    <Button text="Iniciar Juego" onAction="#iniciarJuego" styleClass="boton"/>
+    <Button text="Instrucciones" onAction="#verManual" styleClass="boton"/>
+    <Button text="Salir" onAction="#salirApp" styleClass="boton"/>
+</VBox>
