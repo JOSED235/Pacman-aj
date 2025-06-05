@@ -1,132 +1,110 @@
 package model.grafo;
 
-import estructuras.ListaEnlazada;
-import estructuras.Nodo;
+import estructuras.*;
 
-public class GrafoMatrizAdyacencia<T> implements IGrafo<T> {
+public class GrafoMatrizAdyacencia{
 
-    private static final int CAPACIDAD_INICIAL = 100;
+    private TablaHashGrafo vertices;
+    private double[][] matriz;
+    private int numVertices;
+    private int numAristas;
 
-    private ListaEnlazada<T> vertices;     // Lista de vértices
-    private double[][] matriz;              // Matriz de adyacencia para pesos
-    private int numVertices;                // Cantidad actual de vértices
-    private int numAristas;                 // Cantidad actual de aristas
-
-    public GrafoMatrizAdyacencia() {
-        this.vertices = new ListaEnlazada<>();
-        this.matriz = new double[CAPACIDAD_INICIAL][CAPACIDAD_INICIAL];
+    public GrafoMatrizAdyacencia(int rows, int cols) {
+        this.vertices = new TablaHashGrafo();
+        this.matriz = new double[rows][cols];
         this.numVertices = 0;
         this.numAristas = 0;
 
-        // Inicializar matriz con infinito (sin arista)
-        for (int i = 0; i < CAPACIDAD_INICIAL; i++) {
-            for (int j = 0; j < CAPACIDAD_INICIAL; j++) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
                 matriz[i][j] = Double.POSITIVE_INFINITY;
             }
         }
     }
 
-    @Override
-    public void agregarVertice(T vertice) {
-        if (existeVertice(vertice)) {
-            return;
-        }
-        if (numVertices >= CAPACIDAD_INICIAL) {
-            throw new RuntimeException("Capacidad máxima de vértices alcanzada");
-        }
-        vertices.agregar(vertice);
+    public void inicializaMatriz(int x, int y, int dato) {
+        matriz[x][y] = dato;
+    }
+
+    public void agregarVertice(int x, int y) {
+        int dato = (x*10) + y;
+        matriz[x][y] = 1;
+        Vertice v = new Vertice(dato);
+        vertices.insert(dato, v);
         numVertices++;
     }
 
-    // Obtiene índice del vértice, o -1 si no existe
-    private int indiceVertice(T vertice) {
-        Nodo<T> actual = vertices.getCabeza();
-        int indice = 0;
-        while (actual != null) {
-            if (actual.getDato().equals(vertice)) {
-                return indice;
+    public void agregarArista(int origen) {
+        Vertice first = vertices.get(origen);
+        int i = (first.getDato()/10) - 1;
+        int j = first.getDato() - i;
+        int cont = 1;
+        for(int k = j + 1; k < matriz[i].length; k++) {
+            if (matriz[i][k] == 1) {
+                int a = (i * 10) + k;
+                Vertice last = vertices.get(a);
+                Arista nuevo = new Arista(first, last, cont);
+                first.setRight(nuevo);
+                break;
+            }else if(matriz[i][k] == -1){break;
+            }else if(k == matriz[i].length - 1){
+                k = 0;
+                int a = (i * 10) + k;
+                Vertice last = vertices.get(a);
+                Arista nuevo = new Arista(first, last, cont);
+                first.setRight(nuevo);
+                break;
             }
-            actual = actual.getSiguiente();
-            indice++;
+            cont++;
         }
-        return -1;
-    }
-
-    @Override
-    public void agregarArista(T origen, T destino, double peso) {
-        int i = indiceVertice(origen);
-        int j = indiceVertice(destino);
-
-        if (i == -1 || j == -1) {
-            throw new IllegalArgumentException("Uno o ambos vértices no existen");
-        }
-
-        if (matriz[i][j] == Double.POSITIVE_INFINITY) {
-            numAristas++;
-        }
-        matriz[i][j] = peso;
-    }
-
-    @Override
-    public ListaEnlazada<T> obtenerAdyacentes(T vertice) {
-        int i = indiceVertice(vertice);
-        if (i == -1) {
-            throw new IllegalArgumentException("El vértice no existe");
-        }
-
-        ListaEnlazada<T> adyacentes = new ListaEnlazada<>();
-        for (int j = 0; j < numVertices; j++) {
-            if (matriz[i][j] != Double.POSITIVE_INFINITY) {
-                // Obtener vértice en posición j
-                Nodo<T> actual = vertices.getCabeza();
-                int idx = 0;
-                while (actual != null) {
-                    if (idx == j) {
-                        adyacentes.agregar(actual.getDato());
-                        break;
-                    }
-                    actual = actual.getSiguiente();
-                    idx++;
-                }
+        cont = 1;
+        for(int k = j - 1; k < matriz[i].length && k > -1; k--) {
+            if (matriz[i][k] == 1) {
+                int a = (i * 10) + k;
+                Vertice last = vertices.get(a);
+                Arista nuevo = new Arista(first, last, cont);
+                first.setLeft(nuevo);
+                break;
+            }else if(matriz[i][k] == -1){break;
+            }else if(k == matriz[i].length - 1){
+                k = 0;
+                int a = (i * 10) + k;
+                Vertice last = vertices.get(a);
+                Arista nuevo = new Arista(first, last, cont);
+                first.setLeft(nuevo);
+                break;
             }
+            cont++;
         }
-        return adyacentes;
-    }
-
-    @Override
-    public boolean existeVertice(T vertice) {
-        return indiceVertice(vertice) != -1;
-    }
-
-    @Override
-    public boolean existeArista(T origen, T destino) {
-        int i = indiceVertice(origen);
-        int j = indiceVertice(destino);
-        if (i == -1 || j == -1) return false;
-        return matriz[i][j] != Double.POSITIVE_INFINITY;
-    }
-
-    @Override
-    public double obtenerPesoArista(T origen, T destino) {
-        int i = indiceVertice(origen);
-        int j = indiceVertice(destino);
-        if (i == -1 || j == -1) {
-            throw new IllegalArgumentException("Uno o ambos vértices no existen");
+        cont = 1;
+        for(int k = i + 1; k < matriz.length; k++) {
+            if (matriz[k][j] == 1) {
+                int a = (k * 10) + j;
+                Vertice last = vertices.get(a);
+                Arista nuevo = new Arista(first, last, cont);
+                first.setDown(nuevo);
+                break;
+            }else if(matriz[k][j] == -1){break;}
+            cont++;
         }
-        return matriz[i][j];
+        cont = 1;
+        for(int k = i - 1; k < matriz.length && k > -1; k--) {
+            if (matriz[k][j] == 1) {
+                int a = (k * 10) + j;
+                Vertice last = vertices.get(a);
+                Arista nuevo = new Arista(first, last, cont);
+                first.setUp(nuevo);
+                break;
+            }else if(matriz[k][j] == -1){break;}
+            cont++;
+        }
     }
 
-    @Override
     public int cantidadVertices() {
         return numVertices;
     }
 
-    @Override
     public int cantidadAristas() {
         return numAristas;
-    }
-    @Override
-    public ListaEnlazada<T> obtenerVertices() {
-        return vertices;
     }
 }

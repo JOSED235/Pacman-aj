@@ -15,7 +15,6 @@ public class ManualView {
 
     @FXML
     private TextArea textAreaManual;
-
     @FXML
     public void initialize() {
         try (InputStream is = getClass().getResourceAsStream("/manual/instrucciones.txt")) {
