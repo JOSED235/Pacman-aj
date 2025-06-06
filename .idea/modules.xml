@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Pacman/Pacman.iml" filepath="$PROJECT_DIR$/Pacman/Pacman.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/integrative-task-2-pacman-aj.iml" filepath="$PROJECT_DIR$/.idea/integrative-task-2-pacman-aj.iml" />
     </modules>
   </component>

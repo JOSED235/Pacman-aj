@@ -13,3 +13,7 @@
     -fx-text-fill: yellow;
     -fx-cursor: hand;
 }
+#gridPane .cell {
+    -fx-stroke: transparent;
+}
+

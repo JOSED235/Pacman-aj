@@ -32,6 +32,7 @@ public class DFS<T> {
         while (!pila.estaVacia()) {
             T actual = pila.pop();
 
+
             if (!estaEnLista(marcados, actual)) {
                 visitados.agregar(actual);
                 marcados.agregar(actual);

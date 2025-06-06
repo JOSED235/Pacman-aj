@@ -11,6 +11,7 @@ public class BFS<T> {
     private IGrafo<T> grafo;
 
     public BFS(IGrafo<T> grafo) {
+
         this.grafo = grafo;
     }
 

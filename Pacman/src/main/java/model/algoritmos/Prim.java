@@ -1,11 +1,9 @@
 package model.algoritmos;
 
 import model.grafo.*;
+import estructuras.*;
 
-import estructuras.ColaPrioridad;
-import estructuras.ListaEnlazada;
-import estructuras.Nodo;
-import estructuras.TablaHash;
+
 
 public class Prim<T> {
 
@@ -29,7 +27,7 @@ public class Prim<T> {
         TablaHash<T, Boolean> enMST = new TablaHash<>();
         TablaHash<T, Double> distancias = new TablaHash<>();
         TablaHash<T, T> padres = new TablaHash<>();
-        ColaPrioridad<T> cola = new ColaPrioridad<>();
+        ColaPrioridad<T> cola = new estructuras.ColaPrioridad<T>();
 
         // Inicializar distancias e inclusión en MST
         ListaEnlazada<T> vertices = grafo.obtenerVertices();

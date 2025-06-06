@@ -1,5 +1,6 @@
 package model.grafo;
 
+
 public class Arista<T> {
     public T origen;
     public T destino;

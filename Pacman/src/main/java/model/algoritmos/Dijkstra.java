@@ -1,10 +1,7 @@
 package model.algoritmos;
 
 import model.grafo.*;
-import estructuras.ColaPrioridad;
-import estructuras.ListaEnlazada;
-import estructuras.Nodo;
-import estructuras.TablaHash;
+import estructuras.*;
 
 public class Dijkstra<T> {
 
