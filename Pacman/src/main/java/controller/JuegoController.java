@@ -1,103 +1,60 @@
 package controller;
 
+import estructuras.Vertice;
 import javafx.fxml.FXML;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Priority;
+import javafx.util.Duration;
+import model.entidades.*;
 import model.juego.Laberinto;
-import model.juego.Sprite;
-import model.juego.SpriteType;
-
-import java.util.ArrayList;
 
 public class JuegoController {
 
-    private Laberinto laberinto;
-    private ArrayList<Sprite> sprites;
+    private final Laberinto laberinto;
+    private Vertice positionPacman;
+    private Pacman pacman;
 
     @FXML
     private GridPane gridPane;
 
-    private Image wallImg;
-    private Image floorImg;
-    private Image powerFoodImg;
-
     public JuegoController() {
         laberinto = new Laberinto();
-        sprites = laberinto.obtenerSprites();
-
-        // Cargar imágenes desde resources/pictures
-        wallImg = new Image(getClass().getResource("/pictures/wall.png").toExternalForm());
-        floorImg = new Image(getClass().getResource("/pictures/floor.png").toExternalForm());
-        powerFoodImg = new Image(getClass().getResource("/pictures/powerFood.png").toExternalForm());
-    }
-
-    public void setupKeyListeners(Scene scene) {
-        scene.setOnKeyPressed(this::actions);
+        positionPacman = null;
+        pacman = null;
     }
 
     @FXML
     public void initialize() {
-        gridPane.setHgap(0);
-        gridPane.setVgap(0);
+        GridPane laberintoGraphics = laberinto.obtenerGrid();
 
-        Image wall = new Image(getClass().getResource("/pictures/wall.png").toExternalForm());
-        Image floor = new Image(getClass().getResource("/pictures/floor.png").toExternalForm());
-        Image powerFood = new Image(getClass().getResource("/pictures/powerFood.png").toExternalForm());
-        Image pellet = new Image(getClass().getResource("/pictures/pellet.png").toExternalForm()); // Asegúrate de tenerlo
+        gridPane.getChildren().clear();
+        gridPane.getChildren().add(laberintoGraphics);
 
-        for (Sprite sprite : laberinto.obtenerSprites()) {
-            ImageView view = new ImageView();
-            view.setFitWidth(Laberinto.CELL_SIZE);
-            view.setFitHeight(Laberinto.CELL_SIZE);
+        GridPane.setHgrow(laberintoGraphics, Priority.ALWAYS);
+        GridPane.setVgrow(laberintoGraphics, Priority.ALWAYS);
 
-            switch (sprite.getType()) {
-                case WALL:
-                    view.setImage(wall);
-                    break;
-                case FLOOR:
-                    view.setImage(floor);
-                    break;
-                case POWER_FOOD:
-                    view.setImage(floor);
-                    gridPane.add(view, sprite.getCol(), sprite.getRow());
-
-                    ImageView pf = new ImageView(powerFood);
-                    pf.setFitWidth(8);
-                    pf.setFitHeight(8);
-                    gridPane.add(pf, sprite.getCol(), sprite.getRow());
-                    continue;
-
-                case PELLET:
-                    view.setImage(floor);
-                    gridPane.add(view, sprite.getCol(), sprite.getRow());
-
-                    ImageView p = new ImageView(pellet);
-                    p.setFitWidth(4);
-                    p.setFitHeight(4);
-                    gridPane.add(p, sprite.getCol(), sprite.getRow());
-                    continue;
-
-                case GHOST_AREA:
-                    view.setImage(floor);
-                    break;
-                case DOOR:
-                    view.setImage(floor); // puedes tener image door.png también
-                    break;
-                default:
-                    view.setImage(floor);
-                    break;
-            }
-
-            gridPane.add(view, sprite.getCol(), sprite.getRow());
-        }
+        pacman = new Pacman(laberinto.getPacman(), Laberinto.CELL_SIZE);
+        positionPacman = laberinto.getPacman();
+        gridPane.getChildren().add(pacman.getNode());
     }
 
-    public void actions(KeyEvent event) {
-        KeyCode code = event.getCode();
-        System.out.println("Tecla presionada: " + code);
+
+    @FXML
+    public void onKeyPressed(KeyEvent event) {
+        switch (event.getCode()) {
+            case UP -> {
+                pacman.moveTo(Duration.millis(150), null, Movimiento.UP);
+            }
+            case DOWN -> {
+                pacman.moveTo(Duration.millis(150), null, Movimiento.DOWN);
+            }
+            case LEFT -> {
+                pacman.moveTo(Duration.millis(150), null, Movimiento.LEFT);
+            }
+            case RIGHT -> {
+                pacman.moveTo(Duration.millis(150), null, Movimiento.RIGHT);
+            }
+        }
     }
 }

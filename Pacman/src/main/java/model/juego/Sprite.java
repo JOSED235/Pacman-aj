@@ -1,18 +1,18 @@
 package model.juego;
 
 public class Sprite {
-    private SpriteType type;
+    private int valor;
     private int row;
     private int col;
 
-    public Sprite(SpriteType type, int row, int col) {
-        this.type = type;
+    public Sprite(int valor, int row, int col) {
+        this.valor = valor;
         this.row = row;
         this.col = col;
     }
 
-    public SpriteType getType() {
-        return type;
+    public int getValor() {
+        return valor;
     }
 
     public int getRow() {
@@ -26,7 +26,7 @@ public class Sprite {
     @Override
     public String toString() {
         return "Sprite{" +
-                "type=" + type +
+                "type=" + valor +
                 ", row=" + row +
                 ", col=" + col +
                 '}';

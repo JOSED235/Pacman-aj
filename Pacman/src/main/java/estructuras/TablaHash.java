@@ -2,12 +2,12 @@ package estructuras;
 
 public class TablaHash<K, V> {
 
-    public static class Entrada<K, V> {
+    private static class Entrada<K, V> {
         K key;
         V value;
         Entrada<K, V> siguiente;
 
-        public Entrada(K key, V value) {
+        Entrada(K key, V value) {
             this.key = key;
             this.value = value;
             this.siguiente = null;
@@ -21,7 +21,7 @@ public class TablaHash<K, V> {
     @SuppressWarnings("unchecked")
     public TablaHash() {
         capacidad = 16;
-        tabla = new Entrada[capacidad];  // unchecked warning permitido
+        tabla = new Entrada[capacidad];
         size = 0;
     }
 
@@ -69,7 +69,6 @@ public class TablaHash<K, V> {
     public int size() {
         return size;
     }
-
     public ListaEnlazada<K> obtenerClaves() {
         ListaEnlazada<K> claves = new ListaEnlazada<>();
         for (int i = 0; i < capacidad; i++) {

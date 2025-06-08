@@ -30,17 +30,22 @@ public class GrafoMatrizAdyacencia {
         int dato = (x * matriz[0].length) + y;
 
         matriz[x][y] = 1;
-        Vertice v = new Vertice(dato);
+        Vertice v = new Vertice(dato, x, y);
         vertices.insert(dato, v);
+        numVertices++;
+    }
+
+    public void posicionVertice(Vertice position){
+        vertices.insert(position.getDato(), position);
         numVertices++;
     }
 
     public void agregarArista(int origen) {
         Vertice first = vertices.get(origen);
-        if (first == null) return;  // 🔒 Protección contra NullPointerException
+        if (first == null) return;
 
-        int i = origen / matriz[0].length;
-        int j = origen % matriz[0].length;
+        int i = first.getX();
+        int j = first.getY();
 
 
         // Derecha
@@ -77,7 +82,7 @@ public class GrafoMatrizAdyacencia {
     }
 
     private void crearArista(Vertice origen, int i, int j, int peso, String direccion) {
-        int clave = (i * 10) + j;
+        int clave = (i * matriz[0].length) + j;
         Vertice destino = vertices.get(clave);
         if (destino == null) return;
 

@@ -1,10 +1,5 @@
 package estructuras;
 
-/**
- * Nodo genérico utilizado en listas, pilas y colas.
- */
-
-
 public class Nodo<T> {
     private T dato;
     private Nodo<T> siguiente;

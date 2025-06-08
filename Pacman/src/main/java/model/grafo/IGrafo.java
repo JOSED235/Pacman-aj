@@ -2,7 +2,6 @@ package model.grafo;
 
 import estructuras.ListaEnlazada;
 
-
 public interface IGrafo<T> {
     void agregarVertice(T vertice);
     void agregarArista(T origen, T destino, double peso);

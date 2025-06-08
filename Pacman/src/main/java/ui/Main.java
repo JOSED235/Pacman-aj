@@ -14,16 +14,14 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu-view.fxml"));
         Parent root = loader.load();
 
-        // Crear la escena principal con el archivo de estilos
+        // Crear escena y aplicar estilo.css
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/estilo.css").toExternalForm());
 
-        // Configurar la ventana principal
+        // Configurar ventana
         primaryStage.setTitle("Pacman Grafo");
         primaryStage.setScene(scene);
-        primaryStage.setWidth(800); // Ajustable según necesidad
-        primaryStage.setHeight(600);
-        primaryStage.setResizable(false); // Deshabilita redimensionamiento
+        primaryStage.setResizable(false); // Opcional: ventana fija
         primaryStage.show();
     }
 
