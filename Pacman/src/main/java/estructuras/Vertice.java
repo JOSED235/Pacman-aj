@@ -85,4 +85,22 @@ public class Vertice {
         }
         return result;
     }
+
+    public Arista getArista(Movimiento direction) {
+        return switch (direction) {
+            case UP -> getUp();
+            case DOWN -> getDown();
+            case LEFT -> getLeft();
+            case RIGHT -> getRight();
+        };
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Vertice v = (Vertice) obj;
+        return this.x == v.x && this.y == v.y;
+    }
+
+
 }

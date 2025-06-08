@@ -1,4 +1,8 @@
 package model.ia;
 
-public class FantasmaIA {
+import estructuras.Vertice;
+import model.entidades.Movimiento;
+
+public interface FantasmaIA {
+    Movimiento calcularMovimiento(Vertice origen, Vertice destino);
 }
