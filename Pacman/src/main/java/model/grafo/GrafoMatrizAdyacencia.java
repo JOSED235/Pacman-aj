@@ -2,7 +2,7 @@ package model.grafo;
 
 import estructuras.*;
 
-public class GrafoMatrizAdyacencia{
+public class GrafoMatrizAdyacencia {
 
     private TablaHashGrafo vertices;
     private double[][] matriz;
@@ -27,77 +27,73 @@ public class GrafoMatrizAdyacencia{
     }
 
     public void agregarVertice(int x, int y) {
-        int dato = (x*10) + y;
+        int dato = (x * matriz[0].length) + y;
+
         matriz[x][y] = 1;
-        Vertice v = new Vertice(dato);
+        Vertice v = new Vertice(dato, x, y);
         vertices.insert(dato, v);
+        numVertices++;
+    }
+
+    public void posicionVertice(Vertice position){
+        vertices.insert(position.getDato(), position);
         numVertices++;
     }
 
     public void agregarArista(int origen) {
         Vertice first = vertices.get(origen);
-        int i = (first.getDato()/10) - 1;
-        int j = first.getDato() - i;
-        int cont = 1;
-        for(int k = j + 1; k < matriz[i].length; k++) {
+        if (first == null) return;
+
+        int i = first.getX();
+        int j = first.getY();
+
+
+        // Derecha
+        for (int k = j + 1, cont = 1; k < matriz[i].length; k++, cont++) {
             if (matriz[i][k] == 1) {
-                int a = (i * 10) + k;
-                Vertice last = vertices.get(a);
-                Arista nuevo = new Arista(first, last, cont);
-                first.setRight(nuevo);
+                crearArista(first, i, k, cont, "right");
                 break;
-            }else if(matriz[i][k] == -1){break;
-            }else if(k == matriz[i].length - 1){
-                k = 0;
-                int a = (i * 10) + k;
-                Vertice last = vertices.get(a);
-                Arista nuevo = new Arista(first, last, cont);
-                first.setRight(nuevo);
-                break;
-            }
-            cont++;
+            } else if (matriz[i][k] == -1) break;
         }
-        cont = 1;
-        for(int k = j - 1; k < matriz[i].length && k > -1; k--) {
+
+        // Izquierda
+        for (int k = j - 1, cont = 1; k >= 0; k--, cont++) {
             if (matriz[i][k] == 1) {
-                int a = (i * 10) + k;
-                Vertice last = vertices.get(a);
-                Arista nuevo = new Arista(first, last, cont);
-                first.setLeft(nuevo);
+                crearArista(first, i, k, cont, "left");
                 break;
-            }else if(matriz[i][k] == -1){break;
-            }else if(k == matriz[i].length - 1){
-                k = 0;
-                int a = (i * 10) + k;
-                Vertice last = vertices.get(a);
-                Arista nuevo = new Arista(first, last, cont);
-                first.setLeft(nuevo);
-                break;
-            }
-            cont++;
+            } else if (matriz[i][k] == -1) break;
         }
-        cont = 1;
-        for(int k = i + 1; k < matriz.length; k++) {
+
+        // Abajo
+        for (int k = i + 1, cont = 1; k < matriz.length; k++, cont++) {
             if (matriz[k][j] == 1) {
-                int a = (k * 10) + j;
-                Vertice last = vertices.get(a);
-                Arista nuevo = new Arista(first, last, cont);
-                first.setDown(nuevo);
+                crearArista(first, k, j, cont, "down");
                 break;
-            }else if(matriz[k][j] == -1){break;}
-            cont++;
+            } else if (matriz[k][j] == -1) break;
         }
-        cont = 1;
-        for(int k = i - 1; k < matriz.length && k > -1; k--) {
+
+        // Arriba
+        for (int k = i - 1, cont = 1; k >= 0; k--, cont++) {
             if (matriz[k][j] == 1) {
-                int a = (k * 10) + j;
-                Vertice last = vertices.get(a);
-                Arista nuevo = new Arista(first, last, cont);
-                first.setUp(nuevo);
+                crearArista(first, k, j, cont, "up");
                 break;
-            }else if(matriz[k][j] == -1){break;}
-            cont++;
+            } else if (matriz[k][j] == -1) break;
         }
+    }
+
+    private void crearArista(Vertice origen, int i, int j, int peso, String direccion) {
+        int clave = (i * matriz[0].length) + j;
+        Vertice destino = vertices.get(clave);
+        if (destino == null) return;
+
+        Arista arista = new Arista(origen, destino, peso);
+        switch (direccion) {
+            case "right" -> origen.setRight(arista);
+            case "left" -> origen.setLeft(arista);
+            case "down" -> origen.setDown(arista);
+            case "up" -> origen.setUp(arista);
+        }
+        numAristas++;
     }
 
     public int cantidadVertices() {
