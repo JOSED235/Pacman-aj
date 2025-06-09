@@ -1,62 +1,68 @@
 package model.entidades;
 
 import estructuras.Vertice;
-import javafx.animation.TranslateTransition;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.util.Duration;
+import model.entidades.Movimiento;
 
 public class Pacman {
-    private final ImageView imageView;
     private Vertice posicion;
-    private static int CELL_SIZE;
+    private int vidas;
+    private boolean poderActivo;
 
-    public Pacman(Vertice posicion, int cell) {
-        this.posicion = posicion;
-        CELL_SIZE = cell;
-        Image image = new Image("/pictures/pacmanRight.png");
-        imageView = new ImageView(image);
-        imageView.setFitWidth(CELL_SIZE);
-        imageView.setFitHeight(CELL_SIZE);
+    public Pacman(Vertice inicio) {
+        this.posicion = inicio;
+        this.vidas = 3; // valor inicial por defecto
+        this.poderActivo = false;
     }
 
-    public void relocate() {
-        imageView.setLayoutX(posicion.getX() * CELL_SIZE);
-        imageView.setLayoutY(posicion.getY() * CELL_SIZE);
+    public Vertice getPosicion() {
+        return posicion;
+    }
+    public void setPosicion(Vertice nuevaPosicion) {
+        this.posicion = nuevaPosicion;
     }
 
-    public ImageView getNode() {
-        return imageView;
+    public int getVidas() {
+        return vidas;
     }
 
-    public void moveTo(Duration duration, Runnable onFinished, Movimiento direction) {
-        if(!posicion.isNull(direction)) {
-            TranslateTransition transition = new TranslateTransition(duration, imageView);
-            int x = posicion.getX();
-            int y = posicion.getY();
-
-            if (direction == Movimiento.UP) {
-                this.posicion = (Vertice) posicion.getUp().getDestino();
-            } else if (direction == Movimiento.DOWN) {
-                this.posicion = (Vertice) posicion.getDown().getDestino();
-            } else if (direction == Movimiento.LEFT) {
-                this.posicion = (Vertice) posicion.getLeft().getDestino();
-            } else {
-                this.posicion = (Vertice) posicion.getRight().getDestino();
-            }
-            transition.setToX((posicion.getX() - x) * CELL_SIZE);
-            transition.setToY((posicion.getY() - y) * CELL_SIZE);
-
-            transition.setOnFinished(e -> {
-                imageView.setLayoutX(posicion.getX() * CELL_SIZE);
-                imageView.setLayoutY(posicion.getY() * CELL_SIZE);
-                imageView.setTranslateX(0);
-                imageView.setTranslateY(0);
-                if (onFinished != null) onFinished.run();
-            });
-
-            transition.play();
+    public void perderVida() {
+        if (vidas > 0) {
+            vidas--;
         }
     }
-}
 
+    public void ganarVida() {
+        vidas++;
+    }
+
+    public boolean isPoderActivo() {
+        return poderActivo;
+    }
+
+    public void activarPoder() {
+        poderActivo = true;
+    }
+
+    public void desactivarPoder() {
+        poderActivo = false;
+    }
+
+    public boolean puedeMover(Movimiento direccion) {
+        return !posicion.isNull(direccion);
+    }
+
+    public void mover(Movimiento direccion) {
+        if (puedeMover(direccion)) {
+            switch (direccion) {
+                case UP -> posicion = (Vertice) posicion.getUp().getDestino();
+                case DOWN -> posicion = (Vertice) posicion.getDown().getDestino();
+                case LEFT -> posicion = (Vertice) posicion.getLeft().getDestino();
+                case RIGHT -> posicion = (Vertice) posicion.getRight().getDestino();
+            }
+        }
+    }
+    public javafx.scene.image.ImageView getNode() {
+        return new javafx.scene.image.ImageView(new javafx.scene.image.Image("/pictures/pacmanRight.png"));
+    }
+
+}
