@@ -1,8 +1,6 @@
 package estructuras;
 
-import java.util.Iterator;
-
-public class ListaEnlazada<T>  implements Iterable<T> {
+public class ListaEnlazada<T> {
     private Nodo<T> cabeza;
     private int size;
 
@@ -54,7 +52,6 @@ public class ListaEnlazada<T>  implements Iterable<T> {
     }
 
     public int size() {
-
         return size;
     }
 
@@ -67,42 +64,4 @@ public class ListaEnlazada<T>  implements Iterable<T> {
     public Nodo<T> getCabeza() {
         return cabeza;
     }
-
-
-    public boolean estaVacia() {
-        return size == 0;
-    }
-
-    public T obtener(int index) {
-        if (index < 0 || index >= size) return null;
-        Nodo<T> actual = cabeza;
-        for (int i = 0; i < index; i++) {
-            actual = actual.getSiguiente();
-        }
-        return actual.getDato();
-    }
-    @Override
-    public Iterator<T> iterator() {
-        return new Iterator<T>() {
-            private Nodo<T> actual = cabeza;
-
-            @Override
-            public boolean hasNext() {
-                return actual != null;
-            }
-
-            @Override
-            public T next() {
-                T dato = actual.getDato();
-                actual = actual.getSiguiente();
-                return dato;
-            }
-        };
-    }
-    public void limpiar() {
-        cabeza = null;
-        size = 0;
-    }
-
-
 }

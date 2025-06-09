@@ -6,7 +6,7 @@ public class TablaHashGrafo {
     private int size;
 
     public TablaHashGrafo() {
-        capacidad = 200;
+        capacidad = 500;
         tabla = new Vertice[capacidad];
         size = 0;
     }

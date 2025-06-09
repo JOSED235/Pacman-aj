@@ -1,6 +1,9 @@
 package model.grafo;
 
 import estructuras.*;
+import javafx.scene.layout.GridPane;
+import model.entidades.Consumible;
+import model.entidades.TypeOfConsumable;
 
 public class GrafoMatrizAdyacencia {
 
@@ -8,8 +11,10 @@ public class GrafoMatrizAdyacencia {
     private double[][] matriz;
     private int numVertices;
     private int numAristas;
+    private final GridPane consumibles;
 
     public GrafoMatrizAdyacencia(int rows, int cols) {
+        consumibles = new GridPane();
         this.vertices = new TablaHashGrafo();
         this.matriz = new double[rows][cols];
         this.numVertices = 0;
@@ -26,11 +31,17 @@ public class GrafoMatrizAdyacencia {
         matriz[x][y] = dato;
     }
 
-    public void agregarVertice(int x, int y) {
+    public void agregarVertice(int x, int y, TypeOfConsumable type) {
         int dato = (x * matriz[0].length) + y;
-
         matriz[x][y] = 1;
-        Vertice v = new Vertice(dato, x, y);
+        Vertice v;
+        if(type == null){
+            v = new Vertice(dato, x, y,null);
+        }else {
+            Consumible c = new Consumible(type);
+            consumibles.add(c.getNode(),y,x);
+            v = new Vertice(dato, x, y, c);
+        }
         vertices.insert(dato, v);
         numVertices++;
     }
@@ -50,35 +61,43 @@ public class GrafoMatrizAdyacencia {
 
         // Derecha
         for (int k = j + 1, cont = 1; k < matriz[i].length; k++, cont++) {
-            if (matriz[i][k] == 1) {
+            if (matriz[i][k] == 1 || matriz[i][k] == 0 ) {
                 crearArista(first, i, k, cont, "right");
                 break;
-            } else if (matriz[i][k] == -1) break;
+            } else if (matriz[i][k] < 0) break;
         }
 
         // Izquierda
         for (int k = j - 1, cont = 1; k >= 0; k--, cont++) {
-            if (matriz[i][k] == 1) {
+            if (matriz[i][k] == 1 || matriz[i][k] == 0) {
                 crearArista(first, i, k, cont, "left");
                 break;
-            } else if (matriz[i][k] == -1) break;
+            } else if (matriz[i][k] < 0) break;
         }
 
         // Abajo
         for (int k = i + 1, cont = 1; k < matriz.length; k++, cont++) {
-            if (matriz[k][j] == 1) {
+            if (matriz[k][j] == 1 || matriz[k][j] == 0) {
                 crearArista(first, k, j, cont, "down");
                 break;
-            } else if (matriz[k][j] == -1) break;
+            } else if (matriz[k][j] < 0) break;
         }
 
         // Arriba
         for (int k = i - 1, cont = 1; k >= 0; k--, cont++) {
-            if (matriz[k][j] == 1) {
+            if (matriz[k][j] == 1 || matriz[k][j] == 0) {
                 crearArista(first, k, j, cont, "up");
                 break;
-            } else if (matriz[k][j] == -1) break;
+            } else if (matriz[k][j] < 0) break;
         }
+    }
+
+    public void crearPuente(int origen, int objetivo){
+        Vertice primero = vertices.get(origen);
+        Vertice segundo = vertices.get(objetivo);
+
+        primero.setRight(new Arista(primero, segundo, 1));
+        segundo.setLeft(new Arista(segundo, primero, 1));
     }
 
     private void crearArista(Vertice origen, int i, int j, int peso, String direccion) {
@@ -103,4 +122,6 @@ public class GrafoMatrizAdyacencia {
     public int cantidadAristas() {
         return numAristas;
     }
+
+    public GridPane getConsumibles(){return consumibles;}
 }

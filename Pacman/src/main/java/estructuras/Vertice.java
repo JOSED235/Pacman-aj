@@ -1,6 +1,8 @@
 package estructuras;
 
+import model.entidades.Consumible;
 import model.entidades.Movimiento;
+import model.entidades.TypeOfConsumable;
 import model.grafo.Arista;
 
 public class Vertice {
@@ -12,8 +14,10 @@ public class Vertice {
     private Arista down;
     private int x;
     private int y;
+    private final Consumible consumible;
 
-    public Vertice(int dato, int x, int y) {
+    public Vertice(int dato, int x, int y, Consumible consumible) {
+        this.consumible = consumible;
         this.dato = dato;
         this.x = x;
         this.y = y;
@@ -64,6 +68,13 @@ public class Vertice {
     public int getY() {return y;}
     public void setY(int y) {this.y = y;}
 
+    public Consumible getConsumuble(){
+        if(consumible == null){return null;}
+        if( !consumible.getEstado()){return null;}
+        consumible.changeEstado();
+        return consumible;
+    }
+
     public boolean isNull(Movimiento direction){
         boolean result = false;
         if(direction.equals(Movimiento.UP)){
@@ -85,22 +96,4 @@ public class Vertice {
         }
         return result;
     }
-
-    public Arista getArista(Movimiento direction) {
-        return switch (direction) {
-            case UP -> getUp();
-            case DOWN -> getDown();
-            case LEFT -> getLeft();
-            case RIGHT -> getRight();
-        };
-    }
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Vertice v = (Vertice) obj;
-        return this.x == v.x && this.y == v.y;
-    }
-
-
 }

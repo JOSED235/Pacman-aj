@@ -1,21 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 
-<GridPane fx:id="gridPane"
-          xmlns:fx="http://javafx.com/fxml"
-          fx:controller="controller.JuegoController"
-          style="-fx-background-color: black;"
-          hgap="0" vgap="0">
-
-    <!-- Puedes fijar filas/columnas si sabes el tamaño del laberinto -->
-    <columnConstraints>
-        <ColumnConstraints percentWidth="100"/>
-    </columnConstraints>
-    <rowConstraints>
-        <RowConstraints percentHeight="100"/>
-    </rowConstraints>
-
-</GridPane>
+<StackPane fx:id="root"
+           onKeyPressed="#onKeyPressed"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="controller.JuegoController"
+           style="-fx-background-color: black;">
+</StackPane>

@@ -17,7 +17,6 @@ public class Pacman {
     public Vertice getPosicion() {
         return posicion;
     }
-
     public void setPosicion(Vertice nuevaPosicion) {
         this.posicion = nuevaPosicion;
     }

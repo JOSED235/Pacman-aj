@@ -4,6 +4,7 @@ import estructuras.Vertice;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import model.entidades.TypeOfConsumable;
 import model.grafo.GrafoMatrizAdyacencia;
 
 import java.util.ArrayList;
@@ -17,22 +18,22 @@ public class  Laberinto {
             {-11,  0,-12,  5,  5,-12,  0,-12,  5,  5,  5,-12,  0,-12,-12,  0,-12,  5,  5,  5,-12,  0,-12,  5,  5,-12,  0,-11},
             {-11,  0,-27,-14,-14,-26,  0,-27,-14,-14,-14,-26,  0,-27,-26,  0,-27,-14,-14,-14,-26,  0,-27,-14,-14,-26,  0,-11},
             {-11,  1,  0,  0,  0,  0,  1,  0,  0,  1,  0,  0,  1,  0,  0,  1,  0,  0,  1,  0,  0,  1,  0,  0,  0,  0,  1,-11},
-            {-11,  0,-29,-14,-14,-28,  0,-29,-28,  0,-29,-14,-14,-14,-14,-14,-14,-28,  0,-29,-28,  0,-29,-14,-14,-28,  0,-11},
+            {-11, 11,-29,-14,-14,-28,  0,-29,-28,  0,-29,-14,-14,-14,-14,-14,-14,-28,  0,-29,-28,  0,-29,-14,-14,-28, 11,-11},
             {-11,  0,-27,-14,-14,-26,  0,-12,-12,  0,-27,-14,-14,-28,-29,-14,-14,-26,  0,-12,-12,  0,-27,-14,-14,-26,  0,-11},
             {-11,  1,  0,  0,  0,  0,  1,-12,-12,  1,  0,  0,  1,-12,-12,  1,  0,  0,  1,-12,-12,  1,  0,  0,  0,  0,  1,-11},
-            {-17,-13,-13,-13,-13,-18,  0,-12,-27,-14,-14,-28,  0,-12,-12,  0,-29,-14,-14,-26,-12,  0,-19,-13,-13,-13,-13,-16},
-            {  5,  5,  5,  5,  5,-11,  0,-12,-29,-14,-14,-26,  0,-27,-26,  0,-27,-14,-14,-28,-12,  0,-11,  5,  5,  5,  5,  5},
-            {  5,  5,  5,  5,  5,-11,  0,-12,-12,  1,  0,  0,  1,  0,  0,  1,  0,  0,  1,-12,-12,  0,-11,  5,  5,  5,  5,  5},
-            {  5,  5,  5,  5,  5,-11,  0,-12,-12,  0,-39,-14,-38,-21,-21,-39,-14,-38,  0,-12,-12,  0,-11,  5,  5,  5,  5,  5},
-            {-13,-13,-13,-13,-13,-16,  0,-27,-26,  0,-12,-39,-36,-22,-22,-37,-38,-12,  0,-27,-26,  0,-17,-13,-13,-13,-13,-13},
-            {  1,  0,  0,  0,  0,  0,  1,  0,  0,  1,-12,-12,  9,  9,  9,  9,-12,-12,  1,  0,  0,  1,  0,  0,  0,  0,  0,  1},
-            {-13,-13,-13,-13,-13,-18,  0,-29,-28,  0,-12,-37,-14,-14,-14,-14,-36,-12,  0,-29,-28,  0,-19,-13,-13,-13,-13,-13},
-            {  5,  5,  5,  5,  5,-11,  0,-12,-12,  0,-37,-14,-14,-14,-14,-14,-14,-36,  0,-12,-12,  0,-11,  5,  5,  5,  5,  5},
-            {  5,  5,  5,  5,  5,-11,  0,-12,-12,  1,  0,  0,  0,  0,  0,  0,  0,  0,  1,-12,-12,  0,-11,  5,  5,  5,  5,  5},
-            {  5,  5,  5,  5,  5,-11,  0,-12,-12,  0,-29,-14,-14,-14,-14,-14,-14,-28,  0,-12,-12,  0,-11,  5,  5,  5,  5,  5},
-            {-19,-13,-13,-13,-13,-16,  0,-27,-26,  0,-27,-14,-14,-28,-29,-14,-14,-26,  0,-27,-26,  0,-17,-13,-13,-13,-13,-18},
+            {-17,-13,-13,-13,-13,-18,  0,-12,-27,-14,-14,-28,  2,-12,-12,  2,-29,-14,-14,-26,-12,  0,-19,-13,-13,-13,-13,-16},
+            { -5, -5, -5, -5, -5,-11,  0,-12,-29,-14,-14,-26,  2,-27,-26,  2,-27,-14,-14,-28,-12,  0,-11, -5, -5, -5, -5, -5},
+            { -5, -5, -5, -5, -5,-11,  0,-12,-12,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,-12,-12,  0,-11, -5, -5, -5, -5, -5},
+            { -5, -5, -5, -5, -5,-11,  0,-12,-12,  2,-39,-14,-38,-21,-21,-39,-14,-38,  2,-12,-12,  0,-11, -5, -5, -5, -5, -5},
+            {-13,-13,-13,-13,-13,-16,  0,-27,-26,  2,-12,-39,-36,-22,-22,-37,-38,-12,  2,-27,-26,  0,-17,-13,-13,-13,-13,-13},
+            {  4,  0,  0,  0,  0,  0,  1,  2,  2,  2,-12,-12,  9,  8,  7,  6,-12,-12,  2,  2,  2,  1,  0,  0,  0,  0,  0,  5},
+            {-13,-13,-13,-13,-13,-18,  0,-29,-28,  2,-12,-37,-14,-14,-14,-14,-36,-12,  2,-29,-28,  0,-19,-13,-13,-13,-13,-13},
+            { -5, -5, -5, -5, -5,-11,  0,-12,-12,  2,-37,-14,-14,-14,-14,-14,-14,-36,  2,-12,-12,  0,-11, -5, -5, -5, -5, -5},
+            { -5, -5, -5, -5, -5,-11,  0,-12,-12,  2,  2,  2,  2,  3,  2,  2,  2,  2,  2,-12,-12,  0,-11, -5, -5, -5, -5, -5},
+            { -5, -5, -5, -5, -5,-11,  0,-12,-12,  2,-29,-14,-14,-14,-14,-14,-14,-28,  2,-12,-12,  0,-11, -5, -5, -5, -5, -5},
+            {-19,-13,-13,-13,-13,-16,  0,-27,-26,  2,-27,-14,-14,-28,-29,-14,-14,-26,  2,-27,-26,  0,-17,-13,-13,-13,-13,-18},
             {-11,  1,  0,  0,  0,  0,  1,  0,  0,  1,  0,  0,  1,-12,-12,  1,  0,  0,  1,  0,  0,  1,  0,  0,  0,  0,  1,-11},
-            {-11,  0,-29,-14,-14,-28,  0,-29,-14,-14,-14,-28,  0,-12,-12,  0,-29,-14,-14,-14,-28,  0,-29,-14,-14,-28,  0,-11},
+            {-11, 11,-29,-14,-14,-28,  0,-29,-14,-14,-14,-28,  0,-12,-12,  0,-29,-14,-14,-14,-28,  0,-29,-14,-14,-28, 11,-11},
             {-11,  0,-27,-14,-28,-12,  0,-27,-14,-14,-14,-26,  0,-27,-26,  0,-27,-14,-14,-14,-26,  0,-12,-29,-14,-26,  0,-11},
             {-11,  1,  0,  1,-12,-12,  1,  0,  0,  1,  0,  0,  1,  0, 10,  1,  0,  0,  1,  0,  0,  1,-12,-12,  1,  0,  1,-11},
             {-27,-14,-28,  0,-12,-12,  0,-29,-28,  0,-29,-14,-14,-14,-14,-14,-14,-28,  0,-29,-28,  0,-12,-12,  0,-29,-14,-16},
@@ -48,19 +49,24 @@ public class  Laberinto {
     static final int COLS = mapa[0].length;
     private static GrafoMatrizAdyacencia laberinto;
     private ArrayList<Integer> vertices;
-    private final Vertice ghost1 = new Vertice(14 * COLS + 12,14,12);
-    private final Vertice ghost2 = new Vertice(14 * COLS + 13,14,13);
-    private final Vertice ghost3 = new Vertice(14 * COLS + 14,14,14);
-    private final Vertice ghost4 = new Vertice(14 * COLS + 15,14,15);
-    private final Vertice Pacman = new Vertice(23 * COLS + 14,23,14);
+    private final Vertice ghost1 = new Vertice(14 * COLS + 12,14,12,null);
+    private final Vertice ghost2 = new Vertice(14 * COLS + 13,14,13,null);
+    private final Vertice ghost3 = new Vertice(14 * COLS + 14,14,14,null);
+    private final Vertice ghost4 = new Vertice(14 * COLS + 15,14,15,null);
+    private final Vertice Pacman = new Vertice(23 * COLS + 14,23,14,null);
+    private int keyObjetivo = 0;
+    private int keyOrigen = 0;
+    private GridPane consumibles;
 
 
     public Laberinto() {
         laberinto = new GrafoMatrizAdyacencia(ROWS, COLS);
         vertices = new ArrayList<>();
+        consumibles = new GridPane();
         inicializarMatriz();
     }
 
+    public GridPane getConsumibles(){return consumibles;}
 
     public void inicializarMatriz() {
         if (mapa[0].length != COLS) {
@@ -76,11 +82,27 @@ public class  Laberinto {
             for (int j = 0; j < COLS; j++) {
                 laberinto.inicializaMatriz(i, j, mapa[i][j]);
 
-                if (mapa[i][j] == 1 ) {
-                    laberinto.agregarVertice(i, j);
+                if (mapa[i][j] == 1) {
+                    laberinto.agregarVertice(i, j, TypeOfConsumable.SCORE);
                     int key = i * COLS + j;
                     vertices.add(key);
-                } else if(mapa[i][j] == 9){
+                } else if (mapa[i][j] == 0) {
+                    laberinto.agregarVertice(i, j, TypeOfConsumable.SCORE);
+                    int key = i * COLS + j;
+                    vertices.add(key);
+                }else if (mapa[i][j] == 2){
+                    laberinto.agregarVertice(i, j, null);
+                    int key = i * COLS + j;
+                    vertices.add(key);
+                }else if (mapa[i][j] == 3){
+                    laberinto.agregarVertice(i, j, TypeOfConsumable.TROPHY);
+                    int key = i * COLS + j;
+                    vertices.add(key);
+                }else if (mapa[i][j] == 11){
+                    laberinto.agregarVertice(i, j, TypeOfConsumable.PILL);
+                    int key = i * COLS + j;
+                    vertices.add(key);
+                }else if(mapa[i][j] == 9){
                     laberinto.posicionVertice(ghost1);
                     vertices.add(ghost1.getDato());
                 } else if (mapa[i][j] == 8) {
@@ -95,9 +117,21 @@ public class  Laberinto {
                 } else if (mapa[i][j] == 10) {
                     laberinto.posicionVertice(Pacman);
                     vertices.add(Pacman.getDato());
+                }else if (mapa[i][j] == 5) {
+                    laberinto.agregarVertice(i, j, TypeOfConsumable.SCORE);
+                    int key = i * COLS + j;
+                    vertices.add(key);
+                    keyOrigen = key;
+                }else if (mapa[i][j] == 4) {
+                    laberinto.agregarVertice(i, j, TypeOfConsumable.SCORE);
+                    int key = i * COLS + j;
+                    vertices.add(key);
+                    keyObjetivo = key;
                 }
             }
         }
+        laberinto.crearPuente(keyOrigen,keyObjetivo);
+        consumibles = laberinto.getConsumibles();
 
         for (int key : vertices) {
             laberinto.agregarArista(key);
@@ -230,6 +264,6 @@ public class  Laberinto {
     public Vertice getGhost2(){ return ghost2; }
     public Vertice getGhost3(){ return ghost3; }
     public Vertice getGhost4(){ return ghost4; }
-    public Vertice getPacman(){ return Pacman; }
+    public Vertice getPacman(){ return ghost1; }
 }
 
