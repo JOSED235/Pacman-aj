@@ -17,7 +17,7 @@ public class FantasmaThread extends Thread {
     private final FantasmaIA logica;
     private final Pacman pacman;
     private boolean activo;
-    private final long tiempoMovimiento;
+    private final int tiempo;
 
     /**
      * Constructor para inicializar un fantasma con IA y vista.
@@ -26,38 +26,40 @@ public class FantasmaThread extends Thread {
      * @param vista vista del fantasma
      * @param logica lógica de movimiento (IA)
      * @param pacman referencia al pacman a perseguir
-     * @param tiempoMovimiento tiempo entre movimientos (en ms)
+     *
      */
-    public FantasmaThread(Fantasma fantasma, FantasmaView vista, FantasmaIA logica, Pacman pacman, long tiempoMovimiento) {
+    public FantasmaThread(Fantasma fantasma, FantasmaView vista, FantasmaIA logica, Pacman pacman, int tiempo) {
         this.fantasma = fantasma;
         this.vista = vista;
         this.logica = logica;
         this.pacman = pacman;
-        this.tiempoMovimiento = tiempoMovimiento;
-        this.activo = true;
+        this.tiempo = tiempo;
     }
 
     @Override
     public void run() {
+        System.out.println("Fantasma activo: " + fantasma);
+
+        activo = true;
         while (activo) {
-            Movimiento mov = logica.calcularMovimiento(fantasma.getPosicion(), pacman.getPosicion());
-
-            if (mov != null && fantasma.puedeMover(mov)) {
-                // Mover modelo en el hilo de fondo
-                fantasma.mover(mov);
-
-                // Mover vista en el hilo de JavaFX
-                Platform.runLater(() -> vista.moverA(Duration.millis(250), null, mov));
-            }
-
             try {
-                Thread.sleep(tiempoMovimiento);
+                Movimiento movimiento = logica.calcularMovimiento(fantasma.getPosicion(), pacman.getPosicion());
+                System.out.println("Movimiento calculado: " + movimiento);
+
+
+                if (movimiento != null) {
+                    Platform.runLater(() -> vista.moverA(Duration.millis(300), null, movimiento));
+                }
+
+                Thread.sleep(tiempo);
             } catch (InterruptedException e) {
-                System.out.println("Fantasma interrumpido");
+                e.printStackTrace();
                 break;
             }
         }
     }
+
+
 
     public void detener() {
         activo = false;

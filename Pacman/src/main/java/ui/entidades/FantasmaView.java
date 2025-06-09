@@ -44,36 +44,37 @@ public class FantasmaView {
     }
 
     public void relocate() {
-        imageView.setLayoutX(fantasma.getPosicion().getY() * CELL_SIZE); // Y = columna = X
-        imageView.setLayoutY(fantasma.getPosicion().getX() * CELL_SIZE); // X = fila = Y
+        imageView.setLayoutX(fantasma.getPosicion().getY() * Laberinto.CELL_SIZE);
+        imageView.setLayoutY(fantasma.getPosicion().getX() * Laberinto.CELL_SIZE);
         imageView.setTranslateX(0);
         imageView.setTranslateY(0);
     }
 
     public void moverA(Duration duracion, Runnable onFinish, Movimiento direccion) {
-        if (!fantasma.getPosicion().isNull(direccion)) {
-            Vertice origen = fantasma.getPosicion();
-            Vertice destino = switch (direccion) {
-                case UP -> (Vertice) origen.getUp().getDestino();
-                case DOWN -> (Vertice) origen.getDown().getDestino();
-                case LEFT -> (Vertice) origen.getLeft().getDestino();
-                case RIGHT -> (Vertice) origen.getRight().getDestino();
-            };
+        if (!fantasma.puedeMover(direccion)) return;
 
-            // Animación visual
-            TranslateTransition transicion = new TranslateTransition(duracion, imageView);
-            transicion.setToX((destino.getY() - origen.getY()) * CELL_SIZE);
-            transicion.setToY((destino.getX() - origen.getX()) * CELL_SIZE);
+        Vertice origen = fantasma.getPosicion();
+        Vertice destino = switch (direccion) {
+            case UP -> (Vertice) origen.getUp().getDestino();
+            case DOWN -> (Vertice) origen.getDown().getDestino();
+            case LEFT -> (Vertice) origen.getLeft().getDestino();
+            case RIGHT -> (Vertice) origen.getRight().getDestino();
+        };
 
-            // Al finalizar, actualiza posición lógica y vista
-            transicion.setOnFinished(e -> {
-                fantasma.setPosicion(destino); // mover lógica aquí (no antes)
-                relocate(); // sincroniza posición
-                if (onFinish != null) onFinish.run();
-            });
+        fantasma.setPosicion(destino); // ✅ ACTUALIZACIÓN DEL MODELO
 
-            transicion.play();
-        }
+        TranslateTransition transition = new TranslateTransition(duracion, imageView);
+        transition.setToX((destino.getY() - origen.getY()) * Laberinto.CELL_SIZE);
+        transition.setToY((destino.getX() - origen.getX()) * Laberinto.CELL_SIZE);
+
+        transition.setOnFinished(e -> {
+            relocate(); // ✅ SINCRONIZA COORDENADAS FINALES
+            if (onFinish != null) onFinish.run();
+        });
+
+        transition.play();
     }
+
+
 
 }

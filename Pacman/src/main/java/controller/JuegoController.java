@@ -70,6 +70,7 @@ public class JuegoController {
         root.setOnKeyPressed(this::onKeyPressed);
         root.setOnMouseClicked(e -> root.requestFocus());
         System.out.println("Focus owner: " + root.isFocused());
+        System.out.println("👻 Posición inicial G1: " + ghost1.getPosicion());
 
 
 
@@ -78,6 +79,10 @@ public class JuegoController {
             try {
                 Thread.sleep(5000);
                 Platform.runLater(this::iniciarHilosFantasmas);
+
+
+
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -166,9 +171,11 @@ public class JuegoController {
     @FXML
     private void iniciarHilosFantasmas() {
         int tiempoMovimiento = 500;
+        System.out.println("Iniciando hilos de fantasmas...");
         new FantasmaThread(ghost1, view1, ghost1.getLogica(), pacman, tiempoMovimiento).start();
         new FantasmaThread(ghost2, view2, ghost2.getLogica(), pacman, tiempoMovimiento).start();
         new FantasmaThread(ghost3, view3, ghost3.getLogica(), pacman, tiempoMovimiento).start();
         new FantasmaThread(ghost4, view4, ghost4.getLogica(), pacman, tiempoMovimiento).start();
     }
+
 }
