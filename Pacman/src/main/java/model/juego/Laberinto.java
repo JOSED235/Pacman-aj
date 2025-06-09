@@ -264,6 +264,7 @@ public class  Laberinto {
     public Vertice getGhost2(){ return ghost2; }
     public Vertice getGhost3(){ return ghost3; }
     public Vertice getGhost4(){ return ghost4; }
-    public Vertice getPacman(){ return ghost1; }
+    public Vertice getPacman(){ return Pacman; }
+
 }
 

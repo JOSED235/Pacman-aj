@@ -64,4 +64,21 @@ public class ListaEnlazada<T> {
     public Nodo<T> getCabeza() {
         return cabeza;
     }
+    public boolean estaVacia() {
+        return size == 0;
+    }
+
+    public T obtener(int index) {
+        if (index < 0 || index >= size) return null;
+        Nodo<T> actual = cabeza;
+        for (int i = 0; i < index; i++) {
+            actual = actual.getSiguiente();
+        }
+        return actual.getDato();
+    }
+
+    public void limpiar() {
+        cabeza = null;
+        size = 0;
+    }
 }

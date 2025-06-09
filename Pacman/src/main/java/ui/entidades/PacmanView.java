@@ -50,8 +50,8 @@ public class PacmanView {
         }
 
         TranslateTransition transition = new TranslateTransition(duracion, imageView);
-        transition.setToX((destino.getY() - origen.getY()) * CELL_SIZE);
-        transition.setToY((destino.getX() - origen.getX()) * CELL_SIZE);
+        transition.setToX((destino.getX() - origen.getX()) * CELL_SIZE);
+        transition.setToY((destino.getY() - origen.getY()) * CELL_SIZE);
         AtomicBoolean exit = new AtomicBoolean(true);
         transition.setOnFinished(e -> {
             updatePosition();
