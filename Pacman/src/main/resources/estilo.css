@@ -6,10 +6,89 @@
     -fx-background-radius: 8;
     -fx-border-color: yellow;
     -fx-border-width: 2;
+    -fx-border-radius: 8;
+    -fx-min-width: 200px;
 }
 
 .boton:hover {
     -fx-background-color: #444;
     -fx-text-fill: yellow;
     -fx-cursor: hand;
+}
+
+/* Barra superior del juego */
+.hud {
+    -fx-background-color: black;
+    -fx-padding: 8 14;
+}
+
+.hud-titulo {
+    -fx-text-fill: #8f8fbf;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.hud-valor {
+    -fx-text-fill: yellow;
+    -fx-font-family: "Consolas", monospace;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* Mensajes sobre el tablero: ¡LISTO!, nivel completado, puntos por fantasma */
+.mensaje {
+    -fx-text-fill: yellow;
+    -fx-font-family: "Consolas", monospace;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, black, 6, 0.8, 0, 0);
+}
+
+/* Capas de pausa y fin de partida */
+.overlay {
+    -fx-background-color: rgba(0, 0, 0, 0.82);
+}
+
+.overlay-titulo {
+    -fx-text-fill: yellow;
+    -fx-font-family: "Consolas", monospace;
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+}
+
+.overlay-titulo-rojo {
+    -fx-text-fill: #ff3b3b;
+}
+
+.overlay-puntaje {
+    -fx-text-fill: white;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.overlay-texto {
+    -fx-text-fill: #cfcfe8;
+    -fx-font-size: 14px;
+}
+
+/* Ventana de instrucciones */
+.manual {
+    -fx-background-color: black;
+    -fx-padding: 16;
+}
+
+.manual-texto {
+    -fx-font-family: "Consolas", monospace;
+    -fx-font-size: 13px;
+}
+
+.manual-texto .content {
+    -fx-background-color: #0b0b1e;
+}
+
+.manual-texto, .manual-texto .text-area {
+    -fx-text-fill: #f2f2f2;
+    -fx-control-inner-background: #0b0b1e;
+    -fx-background-color: #2a2a8a;
+    -fx-highlight-fill: #ffd400;
 }

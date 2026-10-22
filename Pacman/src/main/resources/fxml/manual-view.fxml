@@ -6,8 +6,8 @@
 
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml"
       fx:controller="ui.ManualView"
-      spacing="10" style="-fx-padding: 15;" prefWidth="600" prefHeight="400">
+      spacing="12" alignment="CENTER" styleClass="manual" prefWidth="620" prefHeight="560">
 
-    <TextArea fx:id="textAreaManual" editable="false" wrapText="true" VBox.vgrow="ALWAYS" />
-    <Button text="Cerrar" onAction="#cerrarVentana"/>
+    <TextArea fx:id="textAreaManual" editable="false" wrapText="true" styleClass="manual-texto" VBox.vgrow="ALWAYS" />
+    <Button text="Cerrar" onAction="#cerrarVentana" styleClass="boton"/>
 </VBox>

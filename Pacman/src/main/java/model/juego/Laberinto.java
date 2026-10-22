@@ -47,7 +47,7 @@ public class  Laberinto {
 
     static final int ROWS = mapa.length;
     static final int COLS = mapa[0].length;
-    private static GrafoMatrizAdyacencia laberinto;
+    private final GrafoMatrizAdyacencia laberinto;
     private ArrayList<Integer> vertices;
     private final Vertice ghost1 = new Vertice(14 * COLS + 12,14,12,null);
     private final Vertice ghost2 = new Vertice(14 * COLS + 13,14,13,null);
@@ -63,6 +63,9 @@ public class  Laberinto {
         laberinto = new GrafoMatrizAdyacencia(ROWS, COLS);
         vertices = new ArrayList<>();
         consumibles = new GridPane();
+        for (Vertice ghost : new Vertice[]{ghost1, ghost2, ghost3, ghost4}) {
+            ghost.setCasaFantasmas(true);
+        }
         inicializarMatriz();
     }
 
@@ -114,6 +117,10 @@ public class  Laberinto {
                 } else if (mapa[i][j] == 6) {
                     laberinto.posicionVertice(ghost4);
                     vertices.add(ghost4.getDato());
+                } else if (mapa[i][j] == -21 || mapa[i][j] == -22) {
+                    // Puerta de la casa de los fantasmas: solo se cruza hacia afuera
+                    laberinto.agregarVerticeCasa(i, j);
+                    vertices.add(i * COLS + j);
                 } else if (mapa[i][j] == 10) {
                     laberinto.posicionVertice(Pacman);
                     vertices.add(Pacman.getDato());
@@ -259,6 +266,10 @@ public class  Laberinto {
     public int[][] getLaberinto() {
         return mapa;
     }
+
+    public int cantidadComestibles() { return laberinto.cantidadComestibles(); }
+
+    public GrafoMatrizAdyacencia getGrafo() { return laberinto; }
 
     public Vertice getGhost1(){ return ghost1; }
     public Vertice getGhost2(){ return ghost2; }

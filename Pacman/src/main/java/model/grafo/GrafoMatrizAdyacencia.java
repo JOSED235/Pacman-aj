@@ -11,6 +11,7 @@ public class GrafoMatrizAdyacencia {
     private double[][] matriz;
     private int numVertices;
     private int numAristas;
+    private int numComestibles;
     private final GridPane consumibles;
 
     public GrafoMatrizAdyacencia(int rows, int cols) {
@@ -41,12 +42,25 @@ public class GrafoMatrizAdyacencia {
             Consumible c = new Consumible(type);
             consumibles.add(c.getNode(),y,x);
             v = new Vertice(dato, x, y, c);
+            if (type != TypeOfConsumable.TROPHY) numComestibles++;
         }
         vertices.insert(dato, v);
         numVertices++;
     }
 
+    /** Casilla de la casa de los fantasmas o de su puerta: transitable, sin consumible. */
+    public void agregarVerticeCasa(int x, int y) {
+        int dato = (x * matriz[0].length) + y;
+        matriz[x][y] = 1;
+        Vertice v = new Vertice(dato, x, y, null);
+        v.setCasaFantasmas(true);
+        vertices.insert(dato, v);
+        numVertices++;
+    }
+
+    /** Registra un vértice ya creado (posición inicial de un personaje) y lo vuelve transitable. */
     public void posicionVertice(Vertice position){
+        matriz[position.getX()][position.getY()] = 1;
         vertices.insert(position.getDato(), position);
         numVertices++;
     }
@@ -104,6 +118,8 @@ public class GrafoMatrizAdyacencia {
         int clave = (i * matriz[0].length) + j;
         Vertice destino = vertices.get(clave);
         if (destino == null) return;
+        // Puerta de un solo sentido: desde el laberinto no se puede entrar a la casa de los fantasmas
+        if (!origen.isCasaFantasmas() && destino.isCasaFantasmas()) return;
 
         Arista arista = new Arista(origen, destino, peso);
         switch (direccion) {
@@ -121,6 +137,15 @@ public class GrafoMatrizAdyacencia {
 
     public int cantidadAristas() {
         return numAristas;
+    }
+
+    /** Puntos y pastillas de poder: al comerlos todos se completa el nivel. */
+    public int cantidadComestibles() {
+        return numComestibles;
+    }
+
+    public Vertice getVertice(int fila, int columna) {
+        return vertices.get(fila * matriz[0].length + columna);
     }
 
     public GridPane getConsumibles(){return consumibles;}

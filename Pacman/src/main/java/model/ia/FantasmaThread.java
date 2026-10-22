@@ -1,5 +1,6 @@
 package model.ia;
 
+import estructuras.Vertice;
 import javafx.application.Platform;
 import javafx.util.Duration;
 import model.entidades.Fantasma;
@@ -9,66 +10,100 @@ import ui.entidades.FantasmaView;
 
 /**
  * Hilo que maneja el comportamiento autónomo de un fantasma.
+ * La decisión (Dijkstra, BFS o azar) se calcula en este hilo; el movimiento y la animación
+ * se aplican en el hilo de JavaFX con Platform.runLater.
  */
 public class FantasmaThread extends Thread {
 
     private final Fantasma fantasma;
     private final FantasmaView vista;
-    private final FantasmaIA logica;
     private final Pacman pacman;
-    private boolean activo;
-    private final int tiempo;
+    private final Vertice salidaCasa;
+    private final Runnable alMoverse;
+    private final FantasmaIA salir = new FantasmaBFS();
+    private final FantasmaIA huir = new FantasmaAleatorio();
+
+    private volatile boolean activo = true;
+    private volatile boolean pausado = false;
+    private volatile int tiempo;
+    private volatile long esperaHasta;
 
     /**
-     * Constructor para inicializar un fantasma con IA y vista.
-     *
      * @param fantasma modelo del fantasma
      * @param vista vista del fantasma
-     * @param logica lógica de movimiento (IA)
-     * @param pacman referencia al pacman a perseguir
-     *
+     * @param pacman referencia al Pac-Man a perseguir
+     * @param salidaCasa casilla justo afuera de la puerta de la casa
+     * @param tiempo milisegundos entre movimientos
+     * @param retrasoInicial milisegundos que espera en la casa antes de salir
+     * @param alMoverse se ejecuta en el hilo de JavaFX después de cada paso (revisar choques)
      */
-    public FantasmaThread(Fantasma fantasma, FantasmaView vista, FantasmaIA logica, Pacman pacman, int tiempo) {
+    public FantasmaThread(Fantasma fantasma, FantasmaView vista, Pacman pacman, Vertice salidaCasa,
+                          int tiempo, int retrasoInicial, Runnable alMoverse) {
         this.fantasma = fantasma;
         this.vista = vista;
-        this.logica = logica;
         this.pacman = pacman;
+        this.salidaCasa = salidaCasa;
         this.tiempo = tiempo;
+        this.alMoverse = alMoverse;
+        this.esperaHasta = System.currentTimeMillis() + retrasoInicial;
+        setDaemon(true); // no impide que la aplicación se cierre
+        setName("Fantasma-" + fantasma.getLogica().getClass().getSimpleName());
     }
 
     @Override
     public void run() {
-        System.out.println("Fantasma activo: " + fantasma);
-
-        activo = true;
         while (activo) {
             try {
-                Movimiento movimiento = logica.calcularMovimiento(fantasma.getPosicion(), pacman.getPosicion());
-                System.out.println("Movimiento calculado: " + movimiento);
-
-
-                if (movimiento != null) {
-                    Platform.runLater(() -> vista.moverA(Duration.millis(300), null, movimiento));
+                if (!pausado && System.currentTimeMillis() >= esperaHasta) {
+                    Movimiento movimiento = decidir();
+                    if (movimiento != null) {
+                        Platform.runLater(() -> aplicar(movimiento));
+                    }
                 }
-
-                Thread.sleep(tiempo);
+                Thread.sleep(fantasma.isAsustado() ? tiempo * 3L / 2 : tiempo);
             } catch (InterruptedException e) {
-                e.printStackTrace();
-                break;
+                break; // detener() interrumpe el sueño del hilo
             }
         }
     }
 
+    private Movimiento decidir() {
+        Vertice actual = fantasma.getPosicion();
+        if (actual.isCasaFantasmas()) {
+            return salir.calcularMovimiento(actual, salidaCasa);
+        }
+        if (fantasma.isAsustado()) {
+            return huir.calcularMovimiento(actual, pacman.getPosicion());
+        }
+        return fantasma.getLogica().calcularMovimiento(actual, pacman.getPosicion());
+    }
 
+    private void aplicar(Movimiento movimiento) {
+        if (!activo || pausado || !fantasma.puedeMover(movimiento)) return;
+        int duracion = fantasma.isAsustado() ? tiempo * 3 / 2 : tiempo;
+        vista.moverA(Duration.millis(duracion * 0.9), null, movimiento);
+        alMoverse.run();
+    }
 
-    public void detener() {
-        activo = false;
+    /** Deja al fantasma quieto un tiempo (por ejemplo, después de volver a la casa). */
+    public void esperar(int milisegundos) {
+        esperaHasta = System.currentTimeMillis() + milisegundos;
+    }
+
+    public void setTiempo(int tiempo) {
+        this.tiempo = tiempo;
+    }
+
+    public void pausar() {
+        pausado = true;
     }
 
     public void reanudar() {
-        activo = true;
-        if (!this.isAlive()) {
-            this.start();
-        }
+        pausado = false;
+    }
+
+    public void detener() {
+        activo = false;
+        interrupt();
     }
 }

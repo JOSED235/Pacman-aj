@@ -1,16 +1,20 @@
 package model.entidades;
 
 import estructuras.Vertice;
-import model.entidades.Movimiento;
 
 public class Pacman {
-    private Vertice posicion;
+    public static final int VIDAS_INICIALES = 3;
+
+    private final Vertice inicio;
+    // Los hilos de los fantasmas leen esta posición para perseguir a Pac-Man
+    private volatile Vertice posicion;
     private int vidas;
     private boolean poderActivo;
 
     public Pacman(Vertice inicio) {
+        this.inicio = inicio;
         this.posicion = inicio;
-        this.vidas = 3; // valor inicial por defecto
+        this.vidas = VIDAS_INICIALES;
         this.poderActivo = false;
     }
 
@@ -21,8 +25,18 @@ public class Pacman {
         this.posicion = nuevaPosicion;
     }
 
+    /** Vuelve a la casilla de salida (al perder una vida o al empezar un nivel). */
+    public void reiniciarPosicion() {
+        posicion = inicio;
+        poderActivo = false;
+    }
+
     public int getVidas() {
         return vidas;
+    }
+
+    public void setVidas(int vidas) {
+        this.vidas = vidas;
     }
 
     public void perderVida() {
@@ -48,21 +62,12 @@ public class Pacman {
     }
 
     public boolean puedeMover(Movimiento direccion) {
-        return !posicion.isNull(direccion);
+        return direccion != null && !posicion.isNull(direccion);
     }
 
     public void mover(Movimiento direccion) {
         if (puedeMover(direccion)) {
-            switch (direccion) {
-                case UP -> posicion = (Vertice) posicion.getUp().getDestino();
-                case DOWN -> posicion = (Vertice) posicion.getDown().getDestino();
-                case LEFT -> posicion = (Vertice) posicion.getLeft().getDestino();
-                case RIGHT -> posicion = (Vertice) posicion.getRight().getDestino();
-            }
+            posicion = (Vertice) posicion.getArista(direccion).getDestino();
         }
     }
-    public javafx.scene.image.ImageView getNode() {
-        return new javafx.scene.image.ImageView(new javafx.scene.image.Image("/pictures/pacmanRight.png"));
-    }
-
 }

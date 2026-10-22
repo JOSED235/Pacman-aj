@@ -4,86 +4,63 @@ import estructuras.*;
 import model.entidades.Movimiento;
 import model.grafo.Arista;
 
+/**
+ * Fantasma perseguidor: calcula el camino más corto hasta Pac-Man con Dijkstra
+ * sobre el grafo del laberinto y da el primer paso de ese camino.
+ */
 public class FantasmaDijkstra implements FantasmaIA {
 
     @Override
     public Movimiento calcularMovimiento(Vertice origen, Vertice destino) {
-        TablaHash<Vertice, Integer> distancia = new TablaHash<>();
+        if (origen == null || destino == null || origen.equals(destino)) return null;
+
+        TablaHash<Vertice, Double> distancia = new TablaHash<>();
         TablaHash<Vertice, Vertice> anterior = new TablaHash<>();
-        ListaEnlazada<Vertice> noVisitados = new ListaEnlazada<>();
+        TablaHash<Vertice, Boolean> visitado = new TablaHash<>();
+        ColaPrioridad<Vertice> pendientes = new ColaPrioridad<>();
 
-        // Inicializar distancias
-        for (Movimiento dir : Movimiento.getDirecciones()) {
-            if (!origen.isNull(dir)) {
-                Vertice vecino = (Vertice) getArista(origen, dir).getDestino();
-                distancia.put(vecino, Integer.MAX_VALUE);
-                anterior.put(vecino, null);
-                noVisitados.agregar(vecino);
-            }
-        }
+        distancia.put(origen, 0.0);
+        pendientes.encolarConPrioridad(origen, 0.0);
 
-        distancia.put(origen, 0);
-        noVisitados.agregar(origen);
-
-        while (!noVisitados.estaVacia()) {
-            Vertice actual = noVisitados.obtener(0);
-            int minDist = distancia.get(actual);
-
-            for (int i = 1; i < noVisitados.size(); i++) {
-                Vertice v = noVisitados.obtener(i);
-                int dist = distancia.get(v);
-                if (dist < minDist) {
-                    actual = v;
-                    minDist = dist;
-                }
-            }
-
-            noVisitados.eliminar(actual);
-
+        while (!pendientes.estaVacia()) {
+            // La cola de prioridad entrega el vértice pendiente con menor distancia acumulada
+            Vertice actual = pendientes.desencolar();
+            if (visitado.containsKey(actual)) continue; // entrada antigua con una distancia mayor
+            visitado.put(actual, true);
             if (actual.equals(destino)) break;
 
+            double distActual = distancia.get(actual);
             for (Movimiento dir : Movimiento.getDirecciones()) {
-                if (!actual.isNull(dir)) {
-                    Vertice vecino = (Vertice) getArista(actual, dir).getDestino();
-                    int nuevaDistancia = distancia.get(actual) + 1;
-
-                    if (!distancia.containsKey(vecino) || nuevaDistancia < distancia.get(vecino)) {
-                        distancia.put(vecino, nuevaDistancia);
-                        anterior.put(vecino, actual);
-                        if (!noVisitados.contiene(vecino)) {
-                            noVisitados.agregar(vecino);
-                        }
-                    }
+                if (actual.isNull(dir)) continue;
+                Arista arista = actual.getArista(dir);
+                Vertice vecino = (Vertice) arista.getDestino();
+                if (visitado.containsKey(vecino)) continue;
+                double nuevaDistancia = distActual + arista.getPeso();
+                if (!distancia.containsKey(vecino) || nuevaDistancia < distancia.get(vecino)) {
+                    distancia.put(vecino, nuevaDistancia);
+                    anterior.put(vecino, actual);
+                    pendientes.encolarConPrioridad(vecino, nuevaDistancia);
                 }
             }
         }
 
-        // Reconstruir camino
+        if (!anterior.containsKey(destino)) return null; // Pac-Man no es alcanzable
+
+        // Retroceder desde Pac-Man hasta el vértice inmediatamente después del fantasma
         Vertice paso = destino;
-        while (anterior.get(paso) != null && !anterior.get(paso).equals(origen)) {
+        while (!anterior.get(paso).equals(origen)) {
             paso = anterior.get(paso);
         }
-
-        return obtenerDireccion(origen, paso);
+        return direccionHacia(origen, paso);
     }
 
-    private Arista getArista(Vertice vertice, Movimiento dir) {
-        return switch (dir) {
-            case UP -> vertice.getUp();
-            case DOWN -> vertice.getDown();
-            case LEFT -> vertice.getLeft();
-            case RIGHT -> vertice.getRight();
-        };
-    }
-
-    private Movimiento obtenerDireccion(Vertice origen, Vertice destino) {
-        if (destino == null) return null;
-
-        if (destino.getX() < origen.getX()) return Movimiento.LEFT;
-        if (destino.getX() > origen.getX()) return Movimiento.RIGHT;
-        if (destino.getY() < origen.getY()) return Movimiento.UP;
-        if (destino.getY() > origen.getY()) return Movimiento.DOWN;
-
+    /** Dirección de la arista que va de origen a vecino (sirve también para el túnel). */
+    private Movimiento direccionHacia(Vertice origen, Vertice vecino) {
+        for (Movimiento dir : Movimiento.getDirecciones()) {
+            if (!origen.isNull(dir) && origen.getArista(dir).getDestino().equals(vecino)) {
+                return dir;
+            }
+        }
         return null;
     }
 }

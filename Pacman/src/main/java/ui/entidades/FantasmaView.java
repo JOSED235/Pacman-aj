@@ -9,19 +9,18 @@ import model.entidades.Fantasma;
 import model.entidades.Movimiento;
 import model.juego.Laberinto;
 
+/** Vista de un fantasma. Todos sus métodos se llaman desde el hilo de JavaFX. */
 public class FantasmaView {
 
     private final ImageView imageView;
     private final Fantasma fantasma;
+    private final Image normal;
+    private TranslateTransition transicion;
 
     private static final int CELL_SIZE = Laberinto.CELL_SIZE;
+    private static final Image ASUSTADO = new Image("/pictures/scaredGhost.png");
 
-    // Sprites de fantasmas
-    private static final Image RED = new Image("/pictures/redGhost.png");
-    private static final Image PINK = new Image("/pictures/pinkGhost.png");
-    private static final Image ORANGE = new Image("/pictures/orangeGhost.png");
-    private static final Image BLUE = new Image("/pictures/blueGhost.png");
-
+    /** @param tipo 1 rosado, 2 azul, 3 naranja, cualquier otro rojo */
     public FantasmaView(Fantasma fantasma, int tipo) {
         this.fantasma = fantasma;
 
@@ -32,49 +31,66 @@ public class FantasmaView {
             default -> "/pictures/redGhost.png";
         };
 
-        this.imageView = new ImageView(new Image(ruta));
-        imageView.setFitWidth(Laberinto.CELL_SIZE);
-        imageView.setFitHeight(Laberinto.CELL_SIZE);
-        relocate(); // Posiciona visualmente
+        this.normal = new Image(ruta);
+        this.imageView = new ImageView(normal);
+        imageView.setFitWidth(CELL_SIZE);
+        imageView.setFitHeight(CELL_SIZE);
+        relocate();
     }
-
 
     public ImageView getNode() {
         return imageView;
     }
 
+    /** Detiene la animación y coloca la imagen exactamente en la casilla del modelo. */
     public void relocate() {
-        imageView.setLayoutX(fantasma.getPosicion().getY() * Laberinto.CELL_SIZE);
-        imageView.setLayoutY(fantasma.getPosicion().getX() * Laberinto.CELL_SIZE);
+        if (transicion != null) transicion.stop();
+        imageView.setLayoutX(fantasma.getPosicion().getY() * CELL_SIZE);
+        imageView.setLayoutY(fantasma.getPosicion().getX() * CELL_SIZE);
         imageView.setTranslateX(0);
         imageView.setTranslateY(0);
+    }
+
+    /** Cambia entre el sprite normal y el azul de fantasma asustado. */
+    public void setAsustado(boolean asustado) {
+        imageView.setImage(asustado ? ASUSTADO : normal);
+        imageView.setOpacity(1);
+    }
+
+    /** Parpadeo cuando el efecto de la pastilla está por terminar. */
+    public void parpadear(boolean visible) {
+        imageView.setOpacity(visible ? 1 : 0.35);
     }
 
     public void moverA(Duration duracion, Runnable onFinish, Movimiento direccion) {
         if (!fantasma.puedeMover(direccion)) return;
 
         Vertice origen = fantasma.getPosicion();
-        Vertice destino = switch (direccion) {
-            case UP -> (Vertice) origen.getUp().getDestino();
-            case DOWN -> (Vertice) origen.getDown().getDestino();
-            case LEFT -> (Vertice) origen.getLeft().getDestino();
-            case RIGHT -> (Vertice) origen.getRight().getDestino();
-        };
+        fantasma.mover(direccion);
+        Vertice destino = fantasma.getPosicion();
 
-        fantasma.setPosicion(destino); // ✅ ACTUALIZACIÓN DEL MODELO
+        if (transicion != null) transicion.stop();
+        imageView.setLayoutX(origen.getY() * CELL_SIZE);
+        imageView.setLayoutY(origen.getX() * CELL_SIZE);
+        imageView.setTranslateX(0);
+        imageView.setTranslateY(0);
 
-        TranslateTransition transition = new TranslateTransition(duracion, imageView);
-        transition.setToX((destino.getY() - origen.getY()) * Laberinto.CELL_SIZE);
-        transition.setToY((destino.getX() - origen.getX()) * Laberinto.CELL_SIZE);
+        int dCol = destino.getY() - origen.getY();
+        int dFila = destino.getX() - origen.getX();
+        if (Math.abs(dCol) > 1 || Math.abs(dFila) > 1) {
+            // Túnel: aparece al otro lado sin cruzar el tablero
+            relocate();
+            if (onFinish != null) onFinish.run();
+            return;
+        }
 
-        transition.setOnFinished(e -> {
-            relocate(); // ✅ SINCRONIZA COORDENADAS FINALES
+        transicion = new TranslateTransition(duracion, imageView);
+        transicion.setToX(dCol * CELL_SIZE);
+        transicion.setToY(dFila * CELL_SIZE);
+        transicion.setOnFinished(e -> {
+            relocate();
             if (onFinish != null) onFinish.run();
         });
-
-        transition.play();
+        transicion.play();
     }
-
-
-
 }
