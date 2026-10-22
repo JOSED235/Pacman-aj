@@ -21,12 +21,22 @@ Tarea integradora 2 · Discretas I · Universidad Icesi · 2025.
 
 ## Cómo ejecutarlo
 
-Requiere JDK 17 o superior (Maven Wrapper incluido):
+Requiere un JDK 17 o superior con la variable `JAVA_HOME` apuntando a él. No hace falta instalar Maven: el proyecto trae el Maven Wrapper. Los comandos se ejecutan **dentro de la carpeta `Pacman`**.
+
+**Windows (PowerShell o CMD)**
+
+```powershell
+cd Pacman
+.\mvnw.cmd javafx:run    # abre el juego
+.\mvnw.cmd test          # 17 pruebas JUnit 5
+```
+
+**Linux / macOS**
 
 ```bash
 cd Pacman
-./mvnw javafx:run      # Windows: mvnw.cmd javafx:run
-./mvnw test            # 17 pruebas JUnit 5
+./mvnw javafx:run
+./mvnw test
 ```
 
 ## Cómo usa los grafos
